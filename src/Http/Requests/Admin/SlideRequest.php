@@ -26,6 +26,7 @@ class SlideRequest extends CrudRequest
     {
         return [
             'image' => 'required',
+            'title' => 'required',
         ];
     }
 }

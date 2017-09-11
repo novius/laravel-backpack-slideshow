@@ -15,11 +15,21 @@ class SlideCrudController extends CrudController
     {
         $this->crud->setModel(Slide::class);
         $this->crud->setRoute(config('backpack.base.route_prefix').'/slide');
-        $this->crud->setEntityNameStrings(trans('backpack::slideshow.slide'), trans('backpack::slideshow.slides'));
+        $this->crud->setIndexRoute('crud.slide.index', ['slideshow' => (int) request('slideshow')]);
+        $this->crud->setReorderRoute('crud.slide.reorder', ['slideshow' => (int) request('slideshow')]);
+        $this->crud->setEntityNameStrings(trans('backpack_slideshow::slideshow.slide'), trans('backpack_slideshow::slideshow.slides'));
 
         $this->crud->addColumn([
             'name' => 'title',
-            'label' => trans('backpack::slideshow.title'),
+            'label' => trans('backpack_slideshow::slideshow.title'),
+        ]);
+
+        $this->crud->addColumn([
+            // run a function on the CRUD model and show its return value
+            'name' => "image",
+            'label' => trans('backpack_slideshow::slideshow.image'), // Table column heading
+            'type' => "model_function",
+            'function_name' => 'thumbnailAdmin', // the method in your Model
         ]);
 
         $this->crud->addfield([
@@ -29,38 +39,51 @@ class SlideCrudController extends CrudController
         ]);
 
         $this->crud->addfield([
-            'name' => 'image',
-            'label' => trans('backpack::slideshow.image'),
-            'type' => 'image',
-            'upload' => true,
-            'crop' => true, // set to true to allow cropping, false to disable
-            'aspect_ratio' => 1, // ommit or set to 0 to allow any aspect ratio
-            'prefix' => 'storage/' // in case you only store the filename in the database, this text will be prepended to the database value
-        ]);
-
-        $this->crud->addfield([
             'name' => 'title',
-            'label' => trans('backpack::slideshow.title'),
+            'label' => trans('backpack_slideshow::slideshow.title'),
         ]);
 
         $this->crud->addfield([
             'name' => 'subtitle',
-            'label' => trans('backpack::slideshow.subtitle'),
+            'label' => trans('backpack_slideshow::slideshow.subtitle'),
         ]);
 
         $this->crud->addfield([
             'name' => 'text',
-            'label' => trans('backpack::slideshow.text'),
+            'label' => trans('backpack_slideshow::slideshow.text'),
             'type' => 'ckeditor',
         ]);
 
         $this->crud->addfield([
             'name' => 'link',
-            'label' => trans('backpack::slideshow.link'),
-            'type' => 'page_or_link',
-            'page_model' => Page::class,
+            'label' => trans('backpack_slideshow::slideshow.link'),
+            'type' => 'url',
         ]);
 
+        $this->crud->orderBy('lft');
+
+        $this->configureReorder();
+    }
+
+    protected function configureReorder()
+    {
+        $this->crud->allowAccess('reorder');
+        $this->crud->enableReorder('title', 1);
+
+        // The correct way if the PR is accepted https://github.com/Laravel-Backpack/CRUD/pull/932
+        // $this->setReorderFilterCallback(function(){});
+
+        // Alternate way avoiding extension of CrudController in Novius Backpack extended
+        // (overriding the view Reorder)
+        $this->data['reorder_filter_callback'] = function ($value, $key) {
+            $isValid = true;
+            $slideshowId = (int) request('slideshow');
+            if ($slideshowId) {
+                $isValid = $value->slideshow_id == $slideshowId;
+            }
+
+            return $isValid;
+        };
     }
 
     /**
@@ -89,9 +112,34 @@ class SlideCrudController extends CrudController
     public function create()
     {
         $idSlideshow = \Request::get('slideshow');
-        Slideshow::findOrFail($idSlideshow);
+        $slideshow = Slideshow::findOrFail($idSlideshow);
+
+        $this->addImageField($slideshow);
 
         return parent::create();
+    }
+
+    protected function addImageField(Slideshow $slideshow)
+    {
+        $this->crud->addfield([
+            'name' => 'image',
+            'label' => trans('backpack_slideshow::slideshow.image'),
+            'type' => 'image',
+            'upload' => true,
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => $slideshow->ratio(), // ommit or set to 0 to allow any aspect ratio
+            'prefix' => 'storage/' // in case you only store the filename in the database, this text will be prepended to the database value
+        ])->beforeField('title');
+    }
+
+    public function edit($id)
+    {
+        $slide = $this->crud->getEntry($id);
+        $this->crud->setIndexRoute('crud.slide.index', ['slideshow' => $slide->slideshow_id]);
+        $slideshow = $slide->slideshow;
+        $this->addImageField($slideshow);
+
+        return parent::edit($id);
     }
 
     /**

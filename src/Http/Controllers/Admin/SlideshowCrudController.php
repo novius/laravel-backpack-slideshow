@@ -13,17 +13,36 @@ class SlideshowCrudController extends CrudController
     {
         $this->crud->setModel(Slideshow::class);
         $this->crud->setRoute(config('backpack.base.route_prefix').'/slideshow');
-        $this->crud->setEntityNameStrings(trans('backpack::slideshow.slideshow'), trans('backpack::slideshow.slideshows'));
+        $this->crud->setEntityNameStrings(trans('backpack_slideshow::slideshow.slideshow'), trans('backpack_slideshow::slideshow.slideshows'));
         $this->crud->addButtonFromView('line', 'show_slides', 'slideshow-show-slides', 'beginning');
 
         $this->crud->addfield([
             'name' => 'title',
-            'label' => trans('backpack::slideshow.title'),
+            'label' => trans('backpack_slideshow::slideshow.title'),
+            'box' => trans('backpack_slideshow::slideshow.details'),
+        ]);
+
+        $formats = collect(config('backpack.slideshow.formats', []))->map(function ($format) {
+            return array_get($format, 'name');
+        })->toArray();
+
+        $this->crud->addfield([
+            'name' => 'format',
+            'label' => trans('backpack_slideshow::slideshow.format'),
+            'type' => 'select_from_array',
+            'options' => $formats,
+            'allows_null' => false,
+            'box' => trans('backpack_slideshow::slideshow.options'),
+        ]);
+
+        $this->crud->setBoxOptions(trans('backpack_slideshow::slideshow.options'), [
+            'side' => true,
+            'class' => "box-info",
         ]);
 
         $this->crud->addColumn([
             'name' => 'title',
-            'label' => trans('backpack::slideshow.title'),
+            'label' => trans('backpack_slideshow::slideshow.title'),
         ]);
     }
 

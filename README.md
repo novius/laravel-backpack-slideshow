@@ -28,13 +28,25 @@ Run
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="routes"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="lang"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="views"
+
 php artisan migrate
 ```
 
 ## Usage & Features
 
-TODO
+## Integration on admin panel
 
+Add code bellow to : `resources/views/vendor/backpack/base/inc/sidebar.blade.php` 
+
+```php
+<li>
+  <a href="{{ route('crud.slideshow.index') }}" title="">
+    <i class="fa fa-picture-o"></i>
+    <span>{{ trans('backpack_slideshow::slideshow.slideshow') }}</span>
+  </a>
+</li>
+```
 
 ## Testing
 

@@ -24,6 +24,8 @@ class SlideshowRequest extends CrudRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'title' => 'required',
+        ];
     }
 }
