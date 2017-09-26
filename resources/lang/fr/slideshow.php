@@ -11,4 +11,7 @@ return [
     'text' => 'Description',
     'link' => 'Lien',
     'manage_slides' => 'Slides',
+    'options' => 'Options',
+    'details' => 'Détails',
+    'format' => 'Format',
 ];
