@@ -20,6 +20,7 @@ In `config/app.php`, add:
 
 ```php
 \Novius\Backpack\Slideshow\SlideshowServiceProvider::class,
+\Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 ```
 
 Run
@@ -30,6 +31,8 @@ php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServic
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="migrations"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="views"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="config"
+
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
 
 php artisan migrate
 ```
