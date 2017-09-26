@@ -29,6 +29,7 @@ php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServic
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="lang"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="migrations"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="views"
+php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="config"
 
 php artisan migrate
 ```

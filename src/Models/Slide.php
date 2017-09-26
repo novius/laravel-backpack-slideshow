@@ -6,12 +6,15 @@ use Backpack\CRUD\CrudTrait;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Novius\Backpack\CRUD\ModelTraits\UploadableImage;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
-class Slide extends Model
+class Slide extends Model implements HasMediaConversions
 {
     use CrudTrait;
     use HasTranslations;
     use UploadableImage;
+    use HasMediaTrait;
 
     protected $table = 'slideshow_slides';
     protected $primaryKey = 'id';
@@ -64,8 +67,18 @@ class Slide extends Model
      */
     public function imagePathSaved(string $imageAttributeName, string $imagePath, string $diskName)
     {
-        // @TODO : resize
+        $this->addMedia($imagePath)
+        ->preservingOriginal()
+        ->toMediaCollection();
 
         return true;
+    }
+
+    public function registerMediaConversions()
+    {
+        $this->addMediaConversion('thumb')
+            ->width(50)
+            ->height(50)
+            ->optimize();
     }
 }
