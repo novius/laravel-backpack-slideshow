@@ -68,8 +68,15 @@ class Slide extends Model implements HasMediaConversions
     public function imagePathSaved(string $imageAttributeName, string $imagePath, string $diskName)
     {
         $this->addMedia($imagePath)
-        ->preservingOriginal()
-        ->toMediaCollection();
+            ->preservingOriginal()
+            ->toMediaCollection();
+
+        return true;
+    }
+
+    public function imagePathDeleted(string $imagePath, string $imageAttributeName = null, string $diskName = null)
+    {
+        $this->clearMediaCollection();
 
         return true;
     }
