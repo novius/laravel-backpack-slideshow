@@ -144,7 +144,7 @@ class SlideCrudController extends CrudController
 
     /**
      * Overrides save action. Removes actions save_and_back and save_and_new
-     * because there is no way to overrides the index route in the action button.
+     * because there is no way to override the index route in the action button.
      *
      * @return array
      */
