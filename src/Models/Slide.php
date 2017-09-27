@@ -84,8 +84,10 @@ class Slide extends Model implements HasMediaConversions
      * @param string|null $diskName
      * @return bool
      */
-    public function imagePathDeleted(string $imagePath, string $imageAttributeName = null, string $diskName = null) : bool
+    public function imagePathDeleted(string $imagePath, string $imageAttributeName = null, string $diskName = null)
     {
+        $this->clearMediaCollection();
+
         return true;
     }
 
