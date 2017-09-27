@@ -2,9 +2,7 @@
 
 namespace Novius\Backpack\Slideshow;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Novius\Backpack\CRUD\Events\ImageUploadedEvent;
 use Novius\Backpack\Slideshow\Models\Slideshow;
 
 class SlideshowServiceProvider extends LaravelServiceProvider
@@ -25,7 +23,7 @@ class SlideshowServiceProvider extends LaravelServiceProvider
         $this->publishes([__DIR__.'/../config' => config_path('backpack')], 'config');
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'backpack_slideshow');
-        $this->mergeConfigFrom(__DIR__.'/../config/slideshow.php','backpack.slideshow');
+        $this->mergeConfigFrom(__DIR__.'/../config/slideshow.php', 'backpack.slideshow');
     }
 
     /**
