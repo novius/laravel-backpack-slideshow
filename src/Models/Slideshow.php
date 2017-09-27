@@ -6,6 +6,12 @@ use Backpack\CRUD\CrudTrait;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $title
+ *
+ * Class Slideshow
+ * @package Novius\Backpack\Slideshow\Models
+ */
 class Slideshow extends Model
 {
     use CrudTrait;
@@ -20,7 +26,7 @@ class Slideshow extends Model
     public function ratio()
     {
         $ratio = 1;
-        $format = array_get(config('backpack.slideshow.formats', []), $this->format);
+        $format = $this->format();
         if (!empty($format)) {
             $width = (int) array_get($format, 'width');
             $height = (int) array_get($format, 'height');
@@ -30,5 +36,10 @@ class Slideshow extends Model
         }
 
         return $ratio;
+    }
+
+    public function format()
+    {
+        return array_get(config('backpack.slideshow.formats', []), $this->format);
     }
 }

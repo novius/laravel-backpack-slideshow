@@ -16,6 +16,8 @@ class Slide extends Model implements HasMediaConversions
     use UploadableImage;
     use HasMediaTrait;
 
+    public $registerMediaConversionsUsingModelInstance = true;
+
     protected $table = 'slideshow_slides';
     protected $primaryKey = 'id';
 
@@ -58,14 +60,14 @@ class Slide extends Model implements HasMediaConversions
     }
 
     /**
-     * Called after image saved on disk
+     * Overrides UploadableImage Trait
      *
      * @param string $imageAttributeName
      * @param string $imagePath
      * @param string $diskName
      * @return bool
      */
-    public function imagePathSaved(string $imageAttributeName, string $imagePath, string $diskName)
+    public function imagePathSaved(string $imagePath, string $imageAttributeName = null, string $diskName = null) : bool
     {
         $this->addMedia($imagePath)
             ->preservingOriginal()
@@ -74,6 +76,14 @@ class Slide extends Model implements HasMediaConversions
         return true;
     }
 
+    /**
+     * Overrides UploadableImage Trait
+     *
+     * @param string $imagePath
+     * @param string|null $imageAttributeName
+     * @param string|null $diskName
+     * @return bool
+     */
     public function imagePathDeleted(string $imagePath, string $imageAttributeName = null, string $diskName = null)
     {
         $this->clearMediaCollection();
@@ -83,9 +93,13 @@ class Slide extends Model implements HasMediaConversions
 
     public function registerMediaConversions()
     {
+        $format = $this->slideshow->format();
+        $width = (int) array_get($format, 'width', 50);
+        $height = (int) array_get($format, 'height', 50);
+
         $this->addMediaConversion('thumb')
-            ->width(50)
-            ->height(50)
+            ->width($width)
+            ->height($height)
             ->optimize();
     }
 }

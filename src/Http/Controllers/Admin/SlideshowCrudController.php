@@ -37,7 +37,7 @@ class SlideshowCrudController extends CrudController
 
         $this->crud->setBoxOptions(trans('backpack_slideshow::slideshow.options'), [
             'side' => true,
-            'class' => "box-info",
+            'class' => 'box-info',
         ]);
 
         $this->crud->addColumn([
