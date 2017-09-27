@@ -17,7 +17,7 @@
     "require": {
         "php": ">=7.0",
         "laravel/framework": "~5.4.0",
-        "novius/laravel-backpack-crud-extended": "0.2.*",
+        "novius/laravel-backpack-crud-extended": "~0.2.3",
         "spatie/laravel-medialibrary": "5.14.*"
     },
     "require-dev": {
