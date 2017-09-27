@@ -143,6 +143,22 @@ class SlideCrudController extends CrudController
     }
 
     /**
+     * Overrides save action. Removes actions save_and_back and save_and_new
+     * because there is no way to overrides the index route in the action button.
+     *
+     * @return array
+     */
+    public function getSaveAction()
+    {
+        $saveAction = parent::getSaveAction();
+        $this->setSaveAction('save_and_edit');
+        unset($saveAction['options']['save_and_back']);
+        unset($saveAction['options']['save_and_new']);
+
+        return $saveAction;
+    }
+
+    /**
      * @param StoreRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
