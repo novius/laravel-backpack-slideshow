@@ -47,8 +47,10 @@ class Slide extends Model implements HasMediaConversions
     public function thumbnailAdmin()
     {
         $thumbnail = '';
-        if (!empty($this->image)) {
-            $thumbnail = '<img src="'.url('storage/'.$this->image).'?v='.uniqid().'" alt="" width="50" />';
+        $medias = $this->getMedia($this->slideshow->mediaCollection());
+        if (!empty($medias)) {
+            $url = $this->getFirstMediaUrl($this->slideshow->mediaCollection(), 'thumb');
+            $thumbnail = '<img src="'.$url.'?v='.uniqid().'" />';
         }
 
         return $thumbnail;
@@ -93,13 +95,28 @@ class Slide extends Model implements HasMediaConversions
 
     public function registerMediaConversions()
     {
-        $format = $this->slideshow->format();
-        $width = (int) array_get($format, 'width', 50);
-        $height = (int) array_get($format, 'height', 50);
+        $this->createMediaConversion($this->slideshow->format(), $this->slideshow->mediaCollection());
+    }
 
-        $this->addMediaConversion('thumb')
-            ->width($width)
-            ->height($height)
-            ->optimize();
+    protected function createMediaConversion($format, $collection)
+    {
+        if ($format) {
+            $mediaKey = (string) array_get($format, 'media_key');
+            $width = (int) array_get($format, 'width');
+            $height = (int) array_get($format, 'height');
+            $subFormats = array_get($format, 'sub_formats', []);
+
+            $this->addMediaConversion($mediaKey)
+                ->width($width)
+                ->height($height)
+                ->optimize()
+                ->performOnCollections($collection);
+
+            foreach ($subFormats as $subFormat) {
+                $this->createMediaConversion($subFormat, $collection);
+            }
+        }
+
+        return true;
     }
 }

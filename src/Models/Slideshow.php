@@ -42,4 +42,9 @@ class Slideshow extends Model
     {
         return array_get(config('backpack.slideshow.formats', []), $this->format);
     }
+
+    public function mediaCollection()
+    {
+        return $this->format;
+    }
 }
