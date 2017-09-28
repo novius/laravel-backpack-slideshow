@@ -13,5 +13,8 @@ return [
     'manage_slides' => 'Slides',
     'options' => 'Options',
     'details' => 'Détails',
-    'format' => 'Format',
+    'format' => [
+        'label' => 'Format',
+        'default' => 'Défaut',
+    ]
 ];

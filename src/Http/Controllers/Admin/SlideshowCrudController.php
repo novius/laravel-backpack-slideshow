@@ -23,12 +23,12 @@ class SlideshowCrudController extends CrudController
         ]);
 
         $formats = collect(config('backpack.slideshow.formats', []))->map(function ($format) {
-            return array_get($format, 'name');
+            return trans('backpack_slideshow::slideshow.format.'.array_get($format, 'name'));
         })->toArray();
 
         $this->crud->addfield([
             'name' => 'format',
-            'label' => trans('backpack_slideshow::slideshow.format'),
+            'label' => trans('backpack_slideshow::slideshow.format.label'),
             'type' => 'select_from_array',
             'options' => $formats,
             'allows_null' => false,
