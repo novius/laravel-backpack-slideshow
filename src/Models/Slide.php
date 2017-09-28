@@ -12,9 +12,9 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 class Slide extends Model implements HasMediaConversions
 {
     use CrudTrait;
+    use HasMediaTrait;
     use HasTranslations;
     use UploadableImage;
-    use HasMediaTrait;
 
     public $registerMediaConversionsUsingModelInstance = true;
 
