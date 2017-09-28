@@ -23,7 +23,7 @@ class Slideshow extends Model
     protected $fillable = ['title', 'format'];
     protected $translatable = ['title'];
 
-    public function ratio()
+    public function ratio() : int
     {
         $ratio = 1;
         $format = $this->format();
@@ -38,12 +38,12 @@ class Slideshow extends Model
         return $ratio;
     }
 
-    public function format()
+    public function format() : array
     {
         return array_get(config('backpack.slideshow.formats', []), $this->format);
     }
 
-    public function mediaCollection()
+    public function mediaCollection() : string
     {
         return $this->format;
     }

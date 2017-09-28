@@ -37,14 +37,14 @@ class Slide extends Model implements HasMediaConversions
 
     protected $translatable = ['title', 'subtitle', 'text', 'link', 'page_id'];
 
-    public function uploadableImages()
+    public function uploadableImages() : array
     {
         return [
             ['name' => 'image', 'slug' => 'title'],
         ];
     }
 
-    public function thumbnailAdmin()
+    public function thumbnailAdmin() : string
     {
         $thumbnail = '';
         $medias = $this->getMedia($this->slideshow->mediaCollection());
@@ -86,7 +86,7 @@ class Slide extends Model implements HasMediaConversions
      * @param string|null $diskName
      * @return bool
      */
-    public function imagePathDeleted(string $imagePath, string $imageAttributeName = null, string $diskName = null)
+    public function imagePathDeleted(string $imagePath, string $imageAttributeName = null, string $diskName = null) : bool
     {
         $this->clearMediaCollection();
 
@@ -98,7 +98,7 @@ class Slide extends Model implements HasMediaConversions
         $this->createMediaConversion($this->slideshow->format(), $this->slideshow->mediaCollection());
     }
 
-    protected function createMediaConversion($format, $collection)
+    protected function createMediaConversion($format, $collection) : bool
     {
         if ($format) {
             $mediaKey = (string) array_get($format, 'media_key');
