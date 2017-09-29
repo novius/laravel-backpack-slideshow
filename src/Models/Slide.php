@@ -98,13 +98,19 @@ class Slide extends Model implements HasMediaConversions
         $this->createMediaConversion($this->slideshow->format(), $this->slideshow->mediaCollection());
     }
 
-    protected function createMediaConversion($format, $collection) : bool
+    /**
+     * @param $format
+     * @param $collection
+     * @param bool $isMainFormat We add mandatory sub-formats only in main-formats.
+     * @return bool
+     */
+    protected function createMediaConversion($format, $collection, $isMainFormat = true) : bool
     {
         if ($format) {
             $mediaKey = (string) array_get($format, 'media_key');
             $width = (int) array_get($format, 'width');
             $height = (int) array_get($format, 'height');
-            $subFormats = array_get($format, 'sub_formats', []);
+            $subFormats = $this->slideshow->subFormat($format, $isMainFormat);
 
             $this->addMediaConversion($mediaKey)
                 ->width($width)
@@ -113,10 +119,12 @@ class Slide extends Model implements HasMediaConversions
                 ->performOnCollections($collection);
 
             foreach ($subFormats as $subFormat) {
-                $this->createMediaConversion($subFormat, $collection);
+                $this->createMediaConversion($subFormat, $collection, false);
             }
         }
 
         return true;
     }
+
+
 }

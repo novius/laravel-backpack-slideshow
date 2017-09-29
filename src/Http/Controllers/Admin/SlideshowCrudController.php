@@ -63,4 +63,23 @@ class SlideshowCrudController extends CrudController
     {
         return parent::updateCrud($request);
     }
+
+    /**
+     * We manually delete related images.
+     *
+     * @param int $id
+     * @return string
+     */
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+        $slides = Slide::where('slideshow_id', $id)->get();
+
+        foreach ($slides as $slide) {
+            $slide->clearMediaCollection();
+            $slide->delete();
+        }
+
+        return parent::destroy($id);
+    }
 }
