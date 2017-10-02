@@ -23,12 +23,12 @@ class SlideshowCrudController extends CrudController
         ]);
 
         $formats = collect(config('backpack.slideshow.formats', []))->map(function ($format) {
-            return array_get($format, 'name');
+            return trans('backpack_slideshow::slideshow.format.'.array_get($format, 'media_key'));
         })->toArray();
 
         $this->crud->addfield([
             'name' => 'format',
-            'label' => trans('backpack_slideshow::slideshow.format'),
+            'label' => trans('backpack_slideshow::slideshow.format.label'),
             'type' => 'select_from_array',
             'options' => $formats,
             'allows_null' => false,
@@ -37,7 +37,7 @@ class SlideshowCrudController extends CrudController
 
         $this->crud->setBoxOptions(trans('backpack_slideshow::slideshow.options'), [
             'side' => true,
-            'class' => "box-info",
+            'class' => 'box-info',
         ]);
 
         $this->crud->addColumn([
@@ -62,5 +62,24 @@ class SlideshowCrudController extends CrudController
     public function update(UpdateRequest $request)
     {
         return parent::updateCrud($request);
+    }
+
+    /**
+     * We manually delete related images.
+     *
+     * @param int $id
+     * @return string
+     */
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+        $slides = Slide::where('slideshow_id', $id)->get();
+
+        foreach ($slides as $slide) {
+            $slide->clearMediaCollection();
+            $slide->delete();
+        }
+
+        return parent::destroy($id);
     }
 }

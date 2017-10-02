@@ -2,7 +2,6 @@
 
 namespace Novius\Backpack\Slideshow\Http\Controllers\Admin;
 
-use App\Models\Page;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideRequest as StoreRequest;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideRequest as UpdateRequest;
@@ -26,9 +25,9 @@ class SlideCrudController extends CrudController
 
         $this->crud->addColumn([
             // run a function on the CRUD model and show its return value
-            'name' => "image",
+            'name' => 'image',
             'label' => trans('backpack_slideshow::slideshow.image'), // Table column heading
-            'type' => "model_function",
+            'type' => 'model_function',
             'function_name' => 'thumbnailAdmin', // the method in your Model
         ]);
 
@@ -128,7 +127,7 @@ class SlideCrudController extends CrudController
             'upload' => true,
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => $slideshow->ratio(), // ommit or set to 0 to allow any aspect ratio
-            'prefix' => 'storage/' // in case you only store the filename in the database, this text will be prepended to the database value
+            'prefix' => 'storage/', // in case you only store the filename in the database, this text will be prepended to the database value
         ])->beforeField('title');
     }
 
@@ -140,6 +139,22 @@ class SlideCrudController extends CrudController
         $this->addImageField($slideshow);
 
         return parent::edit($id);
+    }
+
+    /**
+     * Overrides save action. Removes actions save_and_back and save_and_new
+     * because there is no way to override the index route in the action button.
+     *
+     * @return array
+     */
+    public function getSaveAction()
+    {
+        $saveAction = parent::getSaveAction();
+        $this->setSaveAction('save_and_edit');
+        unset($saveAction['options']['save_and_back']);
+        unset($saveAction['options']['save_and_new']);
+
+        return $saveAction;
     }
 
     /**
