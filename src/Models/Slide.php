@@ -125,6 +125,4 @@ class Slide extends Model implements HasMediaConversions
 
         return true;
     }
-
-
 }

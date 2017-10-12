@@ -1,0 +1,27 @@
+image: jguyomard/laravel-php:7.1
+
+# https://gitlab.com/gitlab-org/gitlab-ce/issues/4431#note_12281236
+cache:
+  paths:
+    - vendor/
+    - .composercache
+
+before_script:
+  - export APP_ENV=testing
+  - php -v
+  - composer config cache-files-dir .composercache
+
+codestyle:
+  image: novius/cs
+  script:
+    - export COMPOSER_HOME=/tmp/
+    - composer global require friendsofphp/php-cs-fixer:~2.6.0
+    - $COMPOSER_HOME/vendor/bin/php-cs-fixer fix --config .php_cs -vv --diff --dry-run --allow-risky=yes
+    - npm install --only=dev
+    - sh ./cs.sh
+
+tests:
+  image: jguyomard/laravel-php:7.1
+  script:
+    - composer install --no-scripts
+    - sh ./test.sh

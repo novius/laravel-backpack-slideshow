@@ -96,7 +96,7 @@ class Slideshow extends Model
         foreach (array_keys(static::$mandatorySubformats) as $mandatorySubformat) {
             $mandatorySubformatExist = false;
             foreach ($subFormats as $subFormat) {
-                if($subFormat['media_key'] == $mandatorySubformat) {
+                if ($subFormat['media_key'] == $mandatorySubformat) {
                     $mandatorySubformatExist = true;
                 }
             }
