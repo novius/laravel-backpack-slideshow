@@ -5,6 +5,7 @@ namespace Novius\Backpack\Slideshow\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideshowRequest as StoreRequest;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideshowRequest as UpdateRequest;
+use Novius\Backpack\Slideshow\Models\Slide;
 use Novius\Backpack\Slideshow\Models\Slideshow;
 
 class SlideshowCrudController extends CrudController
