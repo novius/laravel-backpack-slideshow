@@ -7,7 +7,6 @@ use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\Builder;
 use Illuminate\View\View;
 
 /**
@@ -99,7 +98,7 @@ class Slideshow extends Model
 
     public static function display($slug) : View
     {
-        $slides = Slideshow::where('slug', $slug)
+        $slides = self::where('slug', $slug)
             ->firstOrFail()
             ->slides()
             ->get();

@@ -133,7 +133,6 @@ class Slide extends Model implements HasMediaConversions
         return $url;
     }
 
-
     public function href()
     {
         return $this->link;
@@ -165,6 +164,4 @@ class Slide extends Model implements HasMediaConversions
 
         return true;
     }
-
-
 }
