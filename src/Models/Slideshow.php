@@ -104,7 +104,7 @@ class Slideshow extends Model
             ->slides()
             ->get();
 
-        return view('front.pages.parts.standard.slider', ['slides' => $slides]);
+        return view('laravel-backpack-slideshow::slider', ['slides' => $slides]);
     }
 
     /**
