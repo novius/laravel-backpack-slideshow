@@ -5,9 +5,14 @@ namespace Novius\Backpack\Slideshow\Models;
 use Backpack\CRUD\CrudTrait;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
+use Illuminate\View\View;
 
 /**
  * @property string $title
+ * @property mixed slug
  *
  * Class Slideshow
  * @package Novius\Backpack\Slideshow\Models
@@ -16,6 +21,7 @@ class Slideshow extends Model
 {
     use CrudTrait;
     use HasTranslations;
+    use Sluggable;
 
     protected $table = 'slideshows';
     protected $primaryKey = 'id';
@@ -49,7 +55,7 @@ class Slideshow extends Model
             $width = (int) array_get($format, 'width');
             $height = (int) array_get($format, 'height');
             if ($width > 1 && $height > 1) {
-                $ratio = ceil($width / $height);
+                $ratio = $width / $height;
             }
         }
 
@@ -86,12 +92,41 @@ class Slideshow extends Model
         return $this->format;
     }
 
-    public function slides()
+    public function slides() : HasMany
     {
         return $this->hasMany(Slide::class, 'slideshow_id');
     }
 
-    protected function addMandatorySubformats($subFormats)
+    public static function display($slug) : View
+    {
+        $slides = Slideshow::where('slug', $slug)
+            ->firstOrFail()
+            ->slides()
+            ->get();
+
+        return view('front.pages.parts.standard.slider', ['slides' => $slides]);
+    }
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable() : array
+    {
+        return [
+            'slug' => [
+                'source' => 'slug_or_title',
+            ],
+        ];
+    }
+
+    public function getSlugOrTitleAttribute() : string
+    {
+        return $this->slug != '' ? $this->slug : $this->title;
+    }
+
+    protected function addMandatorySubformats(array $subFormats) : array
     {
         foreach (array_keys(static::$mandatorySubformats) as $mandatorySubformat) {
             $mandatorySubformatExist = false;

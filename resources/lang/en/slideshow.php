@@ -13,6 +13,10 @@ return [
     'manage_slides' => 'Slides',
     'options' => 'Options',
     'details' => 'Details',
+    'slug' => [
+        'label' => 'Identifier',
+        'title' => 'The id is automatically created',
+    ],
     'format' => [
         'label' => 'Format',
         'default' => 'Default',
