@@ -99,7 +99,7 @@ class Slideshow extends Model
     public static function display($slug) : View
     {
         $slides = self::where('slug', $slug)
-            ->firstOrFail()
+            ->first()
             ->slides()
             ->get();
 

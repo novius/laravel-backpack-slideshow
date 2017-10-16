@@ -1,3 +1,4 @@
+@if($slides.isNotEmpty())
 <div class="slider-container">
     <ul class="slides">
         @foreach($slides as $slide)
@@ -11,3 +12,4 @@
         @endforeach
     </ul>
 </div>
+@endif
