@@ -13,6 +13,10 @@ return [
     'manage_slides' => 'Slides',
     'options' => 'Options',
     'details' => 'Détails',
+    'slug' => [
+        'label' => 'Identifiant',
+        'title' => 'L\'identifiant est crée automatiquement',
+    ],
     'format' => [
         'label' => 'Format',
         'default' => 'Défaut',

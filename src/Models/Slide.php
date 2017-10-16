@@ -5,7 +5,9 @@ namespace Novius\Backpack\Slideshow\Models;
 use Backpack\CRUD\CrudTrait;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Novius\Backpack\CRUD\ModelTraits\UploadableImage;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
@@ -56,7 +58,7 @@ class Slide extends Model implements HasMediaConversions
         return $thumbnail;
     }
 
-    public function slideshow()
+    public function slideshow() : BelongsTo
     {
         return $this->belongsTo(Slideshow::class, 'slideshow_id');
     }
@@ -98,6 +100,44 @@ class Slide extends Model implements HasMediaConversions
         $this->createMediaConversion($this->slideshow->format(), $this->slideshow->mediaCollection());
     }
 
+    public function thumbnailUrl() : string
+    {
+        $url = '';
+        $medias = $this->getMedia($this->slideshow->mediaCollection());
+        if (!empty($medias)) {
+            $url = $this->getFirstMediaUrl($this->slideshow->mediaCollection(), 'thumb');
+        }
+
+        return $url;
+    }
+
+    public function resizeUrl() : string
+    {
+        $url = '';
+        $medias = $this->getMedia($this->slideshow->mediaCollection());
+        if (!empty($medias)) {
+            $url = $this->getFirstMediaUrl($this->slideshow->mediaCollection(), 'resize');
+        }
+
+        return $url;
+    }
+
+    public function defaultUrl() : string
+    {
+        $url = '';
+        $medias = $this->getMedia($this->slideshow->mediaCollection());
+        if (!empty($medias)) {
+            $url = $this->getFirstMediaUrl($this->slideshow->mediaCollection(), 'main');
+        }
+
+        return $url;
+    }
+
+    public function href()
+    {
+        return $this->link;
+    }
+
     /**
      * @param $format
      * @param $collection
@@ -113,8 +153,7 @@ class Slide extends Model implements HasMediaConversions
             $subFormats = $this->slideshow->subFormat($format, $isMainFormat);
 
             $this->addMediaConversion($mediaKey)
-                ->width($width)
-                ->height($height)
+                ->crop(Manipulations::CROP_CENTER, $width, $height)
                 ->optimize()
                 ->performOnCollections($collection);
 

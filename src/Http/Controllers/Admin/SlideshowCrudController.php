@@ -23,8 +23,8 @@ class SlideshowCrudController extends CrudController
             'box' => trans('backpack_slideshow::slideshow.details'),
         ]);
 
-        $formats = collect(config('backpack.slideshow.formats', []))->map(function ($format) {
-            return trans('backpack_slideshow::slideshow.format.'.array_get($format, 'media_key'));
+        $formats = collect(config('backpack.slideshow.formats', []))->map(function ($format, $key) {
+            return trans('backpack_slideshow::slideshow.format.'.$key);
         })->toArray();
 
         $this->crud->addfield([
@@ -34,6 +34,16 @@ class SlideshowCrudController extends CrudController
             'options' => $formats,
             'allows_null' => false,
             'box' => trans('backpack_slideshow::slideshow.options'),
+        ]);
+
+        $this->crud->addField([
+            'name' => 'slug',
+            'label' => trans('backpack_slideshow::slideshow.slug.label'),
+            'type' => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+                'title' => trans('backpack_slideshow::slideshow.slug.title'),
+            ],
         ]);
 
         $this->crud->setBoxOptions(trans('backpack_slideshow::slideshow.options'), [

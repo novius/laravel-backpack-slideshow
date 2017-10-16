@@ -3,6 +3,7 @@
 namespace Novius\Backpack\Slideshow\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Illuminate\Support\Facades\Request;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideRequest as StoreRequest;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideRequest as UpdateRequest;
 use Novius\Backpack\Slideshow\Models\Slide;
@@ -14,8 +15,8 @@ class SlideCrudController extends CrudController
     {
         $this->crud->setModel(Slide::class);
         $this->crud->setRoute(config('backpack.base.route_prefix').'/slide');
-        $this->crud->setIndexRoute('crud.slide.index', ['slideshow' => (int) request('slideshow')]);
-        $this->crud->setReorderRoute('crud.slide.reorder', ['slideshow' => (int) request('slideshow')]);
+        $this->crud->setIndexRoute('crud.slide.index', ['id' => (int) request('id')]);
+        $this->crud->setReorderRoute('crud.slide.reorder', ['id' => (int) request('id')]);
         $this->crud->setEntityNameStrings(trans('backpack_slideshow::slideshow.slide'), trans('backpack_slideshow::slideshow.slides'));
 
         $this->crud->addColumn([
@@ -34,7 +35,7 @@ class SlideCrudController extends CrudController
         $this->crud->addfield([
             'name' => 'slideshow_id',
             'type' => 'hidden',
-            'default' => (int) request('slideshow'),
+            'default' => (int) request('id'),
         ]);
 
         $this->crud->addfield([
@@ -69,6 +70,8 @@ class SlideCrudController extends CrudController
         $this->crud->allowAccess('reorder');
         $this->crud->enableReorder('title', 1);
 
+        $this->crud->setReorderRoute('crud.slide.index', ['id' => Request::get('id')]);
+
         // The correct way if the PR is accepted https://github.com/Laravel-Backpack/CRUD/pull/932
         // $this->setReorderFilterCallback(function(){});
 
@@ -76,7 +79,7 @@ class SlideCrudController extends CrudController
         // (overriding the view Reorder)
         $this->data['reorder_filter_callback'] = function ($value, $key) {
             $isValid = true;
-            $slideshowId = (int) request('slideshow');
+            $slideshowId = (int) request('id');
             if ($slideshowId) {
                 $isValid = $value->slideshow_id == $slideshowId;
             }
@@ -92,7 +95,7 @@ class SlideCrudController extends CrudController
      */
     public function index()
     {
-        $idSlideshow = \Request::get('slideshow');
+        $idSlideshow = \Request::get('id');
         Slideshow::findOrFail($idSlideshow);
 
         $this->crud->addClause('where', 'slideshow_id', $idSlideshow);
@@ -110,7 +113,7 @@ class SlideCrudController extends CrudController
      */
     public function create()
     {
-        $idSlideshow = \Request::get('slideshow');
+        $idSlideshow = \Request::get('id');
         $slideshow = Slideshow::findOrFail($idSlideshow);
 
         $this->addImageField($slideshow);
@@ -134,7 +137,7 @@ class SlideCrudController extends CrudController
     public function edit($id)
     {
         $slide = $this->crud->getEntry($id);
-        $this->crud->setIndexRoute('crud.slide.index', ['slideshow' => $slide->slideshow_id]);
+        $this->crud->setIndexRoute('crud.slide.index', ['id' => $slide->slideshow_id]);
         $slideshow = $slide->slideshow;
         $this->addImageField($slideshow);
 

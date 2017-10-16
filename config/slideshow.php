@@ -15,9 +15,9 @@ return [
         |
         */
         'default' => [
-            'media_key' => 'default',
-            'width' => 1200,
-            'height' => 400,
+            'media_key' => 'main',
+            'width' => 1060,
+            'height' => 500,
             'sub_formats' => [
                 [
                     /*
@@ -25,8 +25,8 @@ return [
                     | This format is mandatory, otherwise it will be added by default.
                     */
                     'media_key' => 'thumb',
-                    'width' => 50,
-                    'height' => 50,
+                    'width' => 145,
+                    'height' => 95,
                 ],
                 [
                     /*
