@@ -100,7 +100,7 @@ class Slideshow extends Model
     {
         $slider = static::where('slug', $slug)
             ->first();
-        $slides = !empty($slider) ? $slider->slides : [];
+        $slides = !empty($slider) ? $slider->slides : collect();
 
         return view('laravel-backpack-slideshow::slider', ['slides' => $slides]);
     }
