@@ -2,8 +2,8 @@
 
 namespace Novius\Backpack\Slideshow\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Support\Facades\Request;
+use Novius\Backpack\CRUD\Http\Controllers\CrudController;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideRequest as StoreRequest;
 use Novius\Backpack\Slideshow\Http\Requests\Admin\SlideRequest as UpdateRequest;
 use Novius\Backpack\Slideshow\Models\Slide;
