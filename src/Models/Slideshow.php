@@ -4,8 +4,8 @@ namespace Novius\Backpack\Slideshow\Models;
 
 use Backpack\CRUD\CrudTrait;
 use Backpack\CRUD\ModelTraits\SpatieTranslatable\HasTranslations;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\View\View;
 
@@ -46,7 +46,7 @@ class Slideshow extends Model
         ],
     ];
 
-    public function ratio() : int
+    public function ratio(): int
     {
         $ratio = 1;
         $format = $this->format();
@@ -65,7 +65,7 @@ class Slideshow extends Model
      * Retrieves main slideshow format from config file
      * @return array
      */
-    public function format() : array
+    public function format(): array
     {
         return array_get(config('backpack.slideshow.formats', []), $this->format);
     }
@@ -77,7 +77,7 @@ class Slideshow extends Model
      * @param $isMainFormat
      * @return array
      */
-    public function subFormat($format, $isMainFormat) : array
+    public function subFormat($format, $isMainFormat): array
     {
         $subFormats = array_get($format, 'sub_formats', []);
 
@@ -86,22 +86,21 @@ class Slideshow extends Model
         return $subFormats;
     }
 
-    public function mediaCollection() : string
+    public function mediaCollection(): string
     {
         return $this->format;
     }
 
-    public function slides() : HasMany
+    public function slides(): HasMany
     {
         return $this->hasMany(Slide::class, 'slideshow_id');
     }
 
-    public static function display($slug) : View
+    public static function display($slug): View
     {
-        $slides = self::where('slug', $slug)
-            ->first()
-            ->slides()
-            ->get();
+        $slider = static::where('slug', $slug)
+            ->first();
+        $slides = !empty($slider) ? $slider->slides : [];
 
         return view('laravel-backpack-slideshow::slider', ['slides' => $slides]);
     }
@@ -111,7 +110,7 @@ class Slideshow extends Model
      *
      * @return array
      */
-    public function sluggable() : array
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -120,12 +119,12 @@ class Slideshow extends Model
         ];
     }
 
-    public function getSlugOrTitleAttribute() : string
+    public function getSlugOrTitleAttribute(): string
     {
         return $this->slug != '' ? $this->slug : $this->title;
     }
 
-    protected function addMandatorySubformats(array $subFormats) : array
+    protected function addMandatorySubformats(array $subFormats): array
     {
         foreach (array_keys(static::$mandatorySubformats) as $mandatorySubformat) {
             $mandatorySubformatExist = false;
