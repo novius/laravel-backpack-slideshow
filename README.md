@@ -36,10 +36,8 @@ php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServicePr
 
 php artisan migrate
 ```
-
 ## Usage & Features
-
-## Integration on admin panel
+### Integration on admin panel:
 
 Add code bellow to : `resources/views/vendor/backpack/base/inc/sidebar.blade.php` 
 
@@ -52,6 +50,18 @@ Add code bellow to : `resources/views/vendor/backpack/base/inc/sidebar.blade.php
 </li>
 ```
 
+### You can go and create your slideshow.
+
+### Then you can display your slideshow like this:
+```php
+// The function "display" takes one parameter:
+//  1. Slug => Identifies the slideshow
+<?php echo \Novius\Backpack\Slideshow\Models\Slideshow::display('slugOfMySlideshow'); ?>
+```
+### Feel free to override the base view to suit your needs.
+```
+/resources/views/vendor/laravel-backpack-slideshow/slider.blade.php
+```
 ## Testing
 
 Run the tests with:
