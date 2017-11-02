@@ -71,6 +71,22 @@ class Slideshow extends Model
     }
 
     /**
+     * Returns a string containing width and height of the current format.
+     * Useful for back-office.
+     * @return string
+     */
+    public function formatLabel(): string
+    {
+        $label = '';
+        $format = $this->format();
+        if (!empty($format['width']) && !empty($format['height'])) {
+            $label = implode(' x ', [$format['width'], $format['height']]);
+        }
+
+        return $label;
+    }
+
+    /**
      * Retrieves sub-formats of a main format. Adds missing mandatory formats.
      *
      * @param $format

@@ -125,7 +125,7 @@ class SlideCrudController extends CrudController
     {
         $this->crud->addfield([
             'name' => 'image',
-            'label' => trans('backpack_slideshow::slideshow.image'),
+            'label' => implode('. ', [trans('backpack_slideshow::slideshow.image'),trans('backpack_slideshow::slideshow.recommended_size')]).' '.$slideshow->formatLabel(),
             'type' => 'image',
             'upload' => true,
             'crop' => true, // set to true to allow cropping, false to disable

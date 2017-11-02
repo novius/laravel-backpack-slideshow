@@ -20,5 +20,6 @@ return [
     'format' => [
         'label' => 'Format',
         'default' => 'Défaut',
-    ]
+    ],
+    'recommended_size' => 'Taille recommandée : ',
 ];

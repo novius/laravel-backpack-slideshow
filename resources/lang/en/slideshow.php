@@ -20,5 +20,6 @@ return [
     'format' => [
         'label' => 'Format',
         'default' => 'Default',
-    ]
+    ],
+    'recommended_size' => 'Recommended size: ',
 ];
