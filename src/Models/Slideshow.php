@@ -46,7 +46,7 @@ class Slideshow extends Model
         ],
     ];
 
-    public function ratio(): int
+    public function ratio(): float
     {
         $ratio = 1;
         $format = $this->format();
