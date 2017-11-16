@@ -153,7 +153,7 @@ class SlideCrudController extends CrudController
     public function getSaveAction()
     {
         $this->setSaveAction('save_and_edit');
-        $saveAction = parent::getSaveAction();        
+        $saveAction = parent::getSaveAction();
         unset($saveAction['options']['save_and_back']);
         unset($saveAction['options']['save_and_new']);
 
