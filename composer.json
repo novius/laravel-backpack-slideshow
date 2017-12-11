@@ -43,6 +43,13 @@
             "phpunit"
         ]
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Novius\\Backpack\\Slideshow\\SlideshowServiceProvider"
+            ]
+        }
+    },
     "config": {
         "sort-packages": true
     }

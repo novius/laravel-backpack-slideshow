@@ -14,16 +14,16 @@ In your terminal:
 composer require novius/laravel-backpack-slideshow
 ```
 
-
-In `config/app.php`, add:
-
+Then, if you are on Laravel 5.4 (no need for Laravel 5.5 and higher), register the service provider to your `config/app.php` file:
 
 ```php
-\Novius\Backpack\Slideshow\SlideshowServiceProvider::class,
-\Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+'providers' => [
+    ...
+    Novius\Backpack\Slideshow\SlideshowServiceProvider::class,
+];
 ```
 
-Run
+Finally, run:
 
 ```php?start_inline=1
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="routes"
@@ -36,7 +36,10 @@ php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServicePr
 
 php artisan migrate
 ```
+
+
 ## Usage & Features
+
 ### Integration on admin panel:
 
 Add code bellow to : `resources/views/vendor/backpack/base/inc/sidebar.blade.php` 
