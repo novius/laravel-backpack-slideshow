@@ -27,7 +27,7 @@ class SlideshowServiceProvider extends LaravelServiceProvider
         $this->publishes([__DIR__.'/../config' => config_path('backpack')], 'config');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views/front', 'laravel-backpack-slideshow');
-        $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'backpack_slideshow');
+        $this->loadTranslationsFrom(dirname(__DIR__).'/resources/lang', 'backpack_slideshow');
         $this->mergeConfigFrom(__DIR__.'/../config/slideshow.php', 'backpack.slideshow');
     }
 

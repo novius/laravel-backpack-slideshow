@@ -10,6 +10,7 @@ use Novius\Backpack\CRUD\ModelTraits\UploadableImage;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\Media;
 
 class Slide extends Model implements HasMediaConversions
 {
@@ -95,7 +96,7 @@ class Slide extends Model implements HasMediaConversions
         return true;
     }
 
-    public function registerMediaConversions()
+    public function registerMediaConversions(Media $media = null)
     {
         $this->createMediaConversion($this->slideshow->format(), $this->slideshow->mediaCollection());
     }
