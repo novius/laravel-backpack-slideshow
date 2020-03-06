@@ -3,7 +3,6 @@
 namespace Novius\Backpack\Slideshow;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Novius\Backpack\Slideshow\Models\Slideshow;
 
 class SlideshowServiceProvider extends LaravelServiceProvider
 {

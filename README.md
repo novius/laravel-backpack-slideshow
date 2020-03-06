@@ -14,15 +14,6 @@ In your terminal:
 composer require novius/laravel-backpack-slideshow
 ```
 
-Then, if you are on Laravel 5.4 (no need for Laravel 5.5 and higher), register the service provider to your `config/app.php` file:
-
-```php
-'providers' => [
-    ...
-    Novius\Backpack\Slideshow\SlideshowServiceProvider::class,
-];
-```
-
 Finally, run:
 
 ```php?start_inline=1
