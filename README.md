@@ -14,16 +14,7 @@ In your terminal:
 composer require novius/laravel-backpack-slideshow
 ```
 
-
-In `config/app.php`, add:
-
-
-```php
-\Novius\Backpack\Slideshow\SlideshowServiceProvider::class,
-\Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
-```
-
-Run
+Finally, run:
 
 ```php?start_inline=1
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="routes"
@@ -32,11 +23,15 @@ php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServic
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="views"
 php artisan vendor:publish --provider="Novius\Backpack\Slideshow\SlideshowServiceProvider" --tag="config"
 
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
 
 php artisan migrate
 ```
+
+
 ## Usage & Features
+
 ### Integration on admin panel:
 
 Add code bellow to : `resources/views/vendor/backpack/base/inc/sidebar.blade.php` 

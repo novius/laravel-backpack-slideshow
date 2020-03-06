@@ -1,4 +1,4 @@
-@if($slides.isNotEmpty())
+@if($slides->isNotEmpty())
 <div class="slider-container">
     <ul class="slides">
         @foreach($slides as $slide)

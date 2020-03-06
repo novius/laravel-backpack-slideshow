@@ -17,7 +17,7 @@ class SlideshowCrudController extends CrudController
         $this->crud->setEntityNameStrings(trans('backpack_slideshow::slideshow.slideshow'), trans('backpack_slideshow::slideshow.slideshows'));
         $this->crud->addButtonFromView('line', 'show_slides', 'slideshow-show-slides', 'beginning');
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'title',
             'label' => trans('backpack_slideshow::slideshow.title'),
             'box' => trans('backpack_slideshow::slideshow.details'),
@@ -27,7 +27,7 @@ class SlideshowCrudController extends CrudController
             return trans('backpack_slideshow::slideshow.format.'.$key);
         })->toArray();
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'format',
             'label' => trans('backpack_slideshow::slideshow.format.label'),
             'type' => 'select_from_array',

@@ -16,7 +16,6 @@ class SlideCrudController extends CrudController
         $this->crud->setModel(Slide::class);
         $this->crud->setRoute(config('backpack.base.route_prefix').'/slide');
         $this->crud->setIndexRoute('crud.slide.index', ['id' => (int) request('id')]);
-        $this->crud->setReorderRoute('crud.slide.reorder', ['id' => (int) request('id')]);
         $this->crud->setEntityNameStrings(trans('backpack_slideshow::slideshow.slide'), trans('backpack_slideshow::slideshow.slides'));
 
         $this->crud->addColumn([
@@ -32,29 +31,29 @@ class SlideCrudController extends CrudController
             'function_name' => 'thumbnailAdmin', // the method in your Model
         ]);
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'slideshow_id',
             'type' => 'hidden',
             'default' => (int) request('id'),
         ]);
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'title',
             'label' => trans('backpack_slideshow::slideshow.title'),
         ]);
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'subtitle',
             'label' => trans('backpack_slideshow::slideshow.subtitle'),
         ]);
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'text',
             'label' => trans('backpack_slideshow::slideshow.text'),
             'type' => 'ckeditor',
         ]);
 
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'link',
             'label' => trans('backpack_slideshow::slideshow.link'),
             'type' => 'url',
@@ -70,18 +69,18 @@ class SlideCrudController extends CrudController
         $this->crud->allowAccess('reorder');
         $this->crud->enableReorder('title', 1);
 
-        $this->crud->setReorderRoute('crud.slide.index', ['id' => Request::get('id')]);
+        $this->crud->setReorderRoute('crud.slide.reorder', ['id' => (int) request('id')]);
 
         // The correct way if the PR is accepted https://github.com/Laravel-Backpack/CRUD/pull/932
         // $this->setReorderFilterCallback(function(){});
 
         // Alternate way avoiding extension of CrudController in Novius Backpack extended
         // (overriding the view Reorder)
-        $this->data['reorder_filter_callback'] = function ($value, $key) {
+        $this->data['reorder_filter_callback'] = function ($slide) {
             $isValid = true;
             $slideshowId = (int) request('id');
             if ($slideshowId) {
-                $isValid = $value->slideshow_id == $slideshowId;
+                $isValid = (int) $slide->slideshow_id === $slideshowId;
             }
 
             return $isValid;
@@ -95,15 +94,19 @@ class SlideCrudController extends CrudController
      */
     public function index()
     {
-        $idSlideshow = \Request::get('id');
-        Slideshow::findOrFail($idSlideshow);
-
-        $this->crud->addClause('where', 'slideshow_id', $idSlideshow);
-
         $this->crud->removeButton('create'); // Recreate bellow with slideshow GET parameter
         $this->crud->addButtonFromView('top', 'add_slide', 'slideshow-create-slide', 'beginning');
 
         return parent::index();
+    }
+
+    public function search()
+    {
+        $idSlideshow = \Request::get('id');
+
+        $this->crud->addClause('where', 'slideshow_id', $idSlideshow);
+
+        return parent::search();
     }
 
     /**
@@ -123,7 +126,7 @@ class SlideCrudController extends CrudController
 
     protected function addImageField(Slideshow $slideshow)
     {
-        $this->crud->addfield([
+        $this->crud->addField([
             'name' => 'image',
             'label' => implode('. ', [trans('backpack_slideshow::slideshow.image'),trans('backpack_slideshow::slideshow.recommended_size')]).' '.$slideshow->formatLabel(),
             'type' => 'image',

@@ -3,7 +3,6 @@
 namespace Novius\Backpack\Slideshow;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Novius\Backpack\Slideshow\Models\Slideshow;
 
 class SlideshowServiceProvider extends LaravelServiceProvider
 {
@@ -16,6 +15,9 @@ class SlideshowServiceProvider extends LaravelServiceProvider
      */
     public function boot()
     {
+        // setup the routes
+        $this->setupRoutes();
+
         $this->publishes([__DIR__.'/../routes' => base_path().'/routes'], 'routes');
         $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang/vendor/backpack')], 'lang');
         $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')], 'migrations');
@@ -24,7 +26,7 @@ class SlideshowServiceProvider extends LaravelServiceProvider
         $this->publishes([__DIR__.'/../config' => config_path('backpack')], 'config');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views/front', 'laravel-backpack-slideshow');
-        $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'backpack_slideshow');
+        $this->loadTranslationsFrom(dirname(__DIR__).'/resources/lang', 'backpack_slideshow');
         $this->mergeConfigFrom(__DIR__.'/../config/slideshow.php', 'backpack.slideshow');
     }
 
@@ -35,8 +37,8 @@ class SlideshowServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        // setup the routes
-        $this->setupRoutes();
+        // register its dependencies
+        $this->app->register(\Spatie\MediaLibrary\MediaLibraryServiceProvider::class);
     }
 
     /**
